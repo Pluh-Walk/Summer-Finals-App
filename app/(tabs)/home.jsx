@@ -205,22 +205,24 @@ export default function Home() {
       >
         <View style={styles.billCardHeader}>
           <View style={styles.billIconBox}>
-            <Text style={styles.billIcon}>🧾</Text>
+            <Ionicons name="receipt" size={22} color={colors.primary} />
           </View>
           <View style={styles.billInfo}>
             <Text style={styles.billName} numberOfLines={1}>{item.name}</Text>
             <View style={styles.billMetaRow}>
-              <Text style={styles.billMeta}>
-                {isHost ? '👑 You are the host' : `👤 Host: ${item.host?.first_name || 'Unknown'}`}
-                {'  ·  '}
-              </Text>
+              {isHost
+                ? <><Ionicons name="star" size={11} color={colors.premium} /><Text style={styles.billMeta}> You host</Text></>
+                : <><Ionicons name="person-outline" size={11} color={colors.textSecondary} /><Text style={styles.billMeta}> {item.host?.first_name || 'Unknown'}</Text></>
+              }
+              <Text style={styles.billMetaDot}>  ·  </Text>
               <Ionicons name="people-outline" size={12} color={colors.textSecondary} />
               <Text style={styles.billMeta}> {acceptedCount + 1} people</Text>
             </View>
           </View>
           {isHost && (
             <View style={styles.hostBadge}>
-              <Text style={styles.hostBadgeText}>Host</Text>
+              <Ionicons name="star" size={10} color={colors.primary} />
+              <Text style={styles.hostBadgeText}> Host</Text>
             </View>
           )}
         </View>
@@ -229,7 +231,7 @@ export default function Home() {
             style={styles.actionBtn}
             onPress={() => router.push(`/bill/${item.id}`)}
           >
-            <Ionicons name="eye-outline" size={16} color={colors.primary} />
+            <Ionicons name="eye" size={15} color={colors.primary} />
             <Text style={styles.actionBtnText}>View</Text>
           </TouchableOpacity>
           {isHost && (
@@ -238,21 +240,21 @@ export default function Home() {
                 style={styles.actionBtn}
                 onPress={() => router.push(`/bill/edit/${item.id}`)}
               >
-                <Ionicons name="pencil-outline" size={16} color={colors.textSecondary} />
+                <Ionicons name="pencil" size={15} color={colors.textSecondary} />
                 <Text style={[styles.actionBtnText, { color: colors.textSecondary }]}>Edit</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.actionBtn}
                 onPress={() => handleArchiveBill(item)}
               >
-                <Ionicons name="archive-outline" size={16} color={colors.warning} />
+                <Ionicons name="archive" size={15} color={colors.warning} />
                 <Text style={[styles.actionBtnText, { color: colors.warning }]}>Archive</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.actionBtn}
                 onPress={() => handleDeleteBill(item)}
               >
-                <Ionicons name="trash-outline" size={16} color={colors.error} />
+                <Ionicons name="trash" size={15} color={colors.error} />
                 <Text style={[styles.actionBtnText, { color: colors.error }]}>Delete</Text>
               </TouchableOpacity>
             </>
@@ -284,12 +286,12 @@ export default function Home() {
                 <Text style={styles.greeting}>Hello, {profile?.first_name || 'there'} 👋</Text>
                 <View style={styles.accountBadge}>
                   <Text style={[styles.accountBadgeText, profile?.account_type === 'premium' ? styles.premiumBadge : styles.standardBadge]}>
-                    {profile?.account_type === 'premium' ? '⭐ Premium' : '🔹 Standard'}
+                    {profile?.account_type === 'premium' ? '⭐ Premium' : 'Standard'}
                   </Text>
                 </View>
               </View>
               <TouchableOpacity style={styles.joinBtn} onPress={() => setJoinModalVisible(true)}>
-                <Ionicons name="qr-code-outline" size={16} color={colors.primary} />
+                <Ionicons name="qr-code" size={16} color={colors.primary} />
                 <Text style={styles.joinBtnText}>Join via Code</Text>
               </TouchableOpacity>
             </View>
@@ -304,7 +306,9 @@ export default function Home() {
         )}
         ListEmptyComponent={() => (
           <View style={styles.empty}>
-            <Text style={styles.emptyIcon}>📋</Text>
+            <View style={styles.emptyIconBox}>
+              <Ionicons name="receipt-outline" size={44} color={colors.textLight} />
+            </View>
             <Text style={styles.emptyTitle}>No bills yet</Text>
             <Text style={styles.emptySubtitle}>Create your first bill or join one with an invitation code.</Text>
           </View>
@@ -326,7 +330,7 @@ export default function Home() {
         <View style={styles.confirmOverlay}>
           <View style={styles.confirmCard}>
             <Ionicons
-              name={confirmModal?.type === 'delete' ? 'trash-outline' : 'archive-outline'}
+              name={confirmModal?.type === 'delete' ? 'trash' : 'archive'}
               size={32}
               color={confirmModal?.type === 'delete' ? colors.error : colors.warning}
             />
@@ -441,18 +445,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryLight, alignItems: 'center', justifyContent: 'center',
     marginRight: spacing.sm,
   },
-  billIcon: { fontSize: 22 },
   billInfo: { flex: 1 },
   billName: { fontSize: fontSize.md, fontWeight: '700', color: colors.text },
   billMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 2 },
+  billMetaDot: { fontSize: fontSize.xs, color: colors.textSecondary },
   billMeta: { fontSize: fontSize.xs, color: colors.textSecondary },
   hostBadge: {
     backgroundColor: colors.primaryLight, borderRadius: borderRadius.full,
     paddingHorizontal: spacing.sm, paddingVertical: 2,
+    flexDirection: 'row', alignItems: 'center',
   },
   hostBadgeText: { color: colors.primary, fontSize: fontSize.xs, fontWeight: '700' },
   billCardActions: { flexDirection: 'row', gap: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.sm },
-  actionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
+  actionBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    paddingHorizontal: spacing.sm, paddingVertical: spacing.xs,
+    borderRadius: borderRadius.sm, backgroundColor: colors.background,
+  },
   actionBtnText: { fontSize: fontSize.xs, fontWeight: '600', color: colors.primary },
   inviteCard: {
     backgroundColor: colors.primaryLight,
@@ -475,7 +484,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.error, alignItems: 'center', justifyContent: 'center',
   },
   empty: { alignItems: 'center', padding: spacing.xxl },
-  emptyIcon: { fontSize: 48, marginBottom: spacing.md },
+  emptyIconBox: {
+    width: 80, height: 80, borderRadius: borderRadius.xl,
+    backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center',
+    marginBottom: spacing.md, borderWidth: 1.5, borderColor: colors.border,
+  },
   emptyTitle: { fontSize: fontSize.lg, fontWeight: '700', color: colors.text, marginBottom: spacing.xs },
   emptySubtitle: { fontSize: fontSize.sm, color: colors.textSecondary, textAlign: 'center', lineHeight: 20 },
   fab: {

@@ -16,6 +16,7 @@ export default function Input({
   multiline = false,
   numberOfLines,
   editable = true,
+  leftIcon,
   rightIcon,
   onRightIconPress,
   style,
@@ -37,6 +38,9 @@ export default function Input({
           !editable && styles.disabled,
         ]}
       >
+        {leftIcon && (
+          <Ionicons name={leftIcon} size={18} color={focused ? colors.primary : colors.textLight} style={styles.leftIcon} />
+        )}
         <TextInput
           style={[styles.input, multiline && styles.multiline]}
           value={value}
@@ -100,6 +104,9 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
+  },
+  leftIcon: {
+    marginRight: spacing.xs + 2,
   },
   input: {
     flex: 1,

@@ -4,7 +4,9 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, borderRadius, fontSize, spacing } from '../constants/theme';
 
 export default function Button({
@@ -14,9 +16,16 @@ export default function Button({
   loading = false,
   disabled = false,
   size = 'md',
+  icon,
+  iconPosition = 'left',
   style,
 }) {
   const isDisabled = disabled || loading;
+
+  const iconColor = variant === 'secondary' || variant === 'ghost' ? colors.primary
+    : variant === 'danger' ? '#fff'
+    : '#fff';
+  const iconSize = size === 'sm' ? 15 : size === 'lg' ? 22 : 18;
 
   return (
     <TouchableOpacity
@@ -29,14 +38,22 @@ export default function Button({
         isDisabled && styles.disabled,
         style,
       ]}
-      activeOpacity={0.8}
+      activeOpacity={0.75}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? '#fff' : colors.primary} />
+        <ActivityIndicator color={variant === 'secondary' || variant === 'ghost' ? colors.primary : '#fff'} />
       ) : (
-        <Text style={[styles.text, styles[`text_${variant}`], styles[`textSize_${size}`]]}>
-          {title}
-        </Text>
+        <View style={styles.inner}>
+          {icon && iconPosition === 'left' && (
+            <Ionicons name={icon} size={iconSize} color={iconColor} style={styles.iconLeft} />
+          )}
+          <Text style={[styles.text, styles[`text_${variant}`], styles[`textSize_${size}`]]}>
+            {title}
+          </Text>
+          {icon && iconPosition === 'right' && (
+            <Ionicons name={icon} size={iconSize} color={iconColor} style={styles.iconRight} />
+          )}
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -48,7 +65,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    shadowColor: '#6366F1',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 3,
   },
+  inner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconLeft: { marginRight: 7 },
+  iconRight: { marginLeft: 7 },
   primary: {
     backgroundColor: colors.primary,
   },

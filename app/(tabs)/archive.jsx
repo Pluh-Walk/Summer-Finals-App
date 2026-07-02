@@ -81,15 +81,17 @@ export default function Archive() {
         </View>
         <View style={styles.billCardHeader}>
           <View style={styles.billIconBox}>
-            <Text style={styles.billIcon}>📦</Text>
+            <Ionicons name="archive" size={22} color={colors.standard} />
           </View>
           <View style={styles.billInfo}>
             <Text style={styles.billName} numberOfLines={1}>{item.name}</Text>
-            <Text style={styles.billMeta}>
-              {isHost ? '👑 You are the host' : `👤 Host: ${item.host?.first_name || 'Unknown'}`}
-              {'  ·  '}
-              {acceptedCount + 1} people
-            </Text>
+            <View style={styles.billMetaRow}>
+              {isHost
+                ? <><Ionicons name="star" size={11} color={colors.premium} /><Text style={styles.billMeta}> You host</Text></>
+                : <><Ionicons name="person-outline" size={11} color={colors.textSecondary} /><Text style={styles.billMeta}> {item.host?.first_name || 'Unknown'}</Text></>
+              }
+              <Text style={styles.billMeta}>  ·  {acceptedCount + 1} people</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -125,7 +127,9 @@ export default function Archive() {
         )}
         ListEmptyComponent={() => (
           <View style={styles.empty}>
-            <Text style={styles.emptyIcon}>📦</Text>
+            <View style={styles.emptyIconBox}>
+              <Ionicons name="archive-outline" size={44} color={colors.textLight} />
+            </View>
             <Text style={styles.emptyTitle}>No archived bills</Text>
             <Text style={styles.emptySubtitle}>
               Bills appear here after being archived by the host when all payments are settled.
@@ -165,12 +169,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.standardLight, alignItems: 'center', justifyContent: 'center',
     marginRight: spacing.sm,
   },
-  billIcon: { fontSize: 22 },
   billInfo: { flex: 1 },
   billName: { fontSize: fontSize.md, fontWeight: '700', color: colors.text },
+  billMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 2 },
   billMeta: { fontSize: fontSize.xs, color: colors.textSecondary, marginTop: 2 },
   empty: { alignItems: 'center', padding: spacing.xxl },
-  emptyIcon: { fontSize: 48, marginBottom: spacing.md },
+  emptyIconBox: {
+    width: 80, height: 80, borderRadius: borderRadius.xl,
+    backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center',
+    marginBottom: spacing.md, borderWidth: 1.5, borderColor: colors.border,
+  },
   emptyTitle: { fontSize: fontSize.lg, fontWeight: '700', color: colors.text, marginBottom: spacing.xs },
   emptySubtitle: { fontSize: fontSize.sm, color: colors.textSecondary, textAlign: 'center', lineHeight: 20 },
 });

@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { Link, Redirect, router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -88,7 +89,7 @@ export default function Register() {
       >
         <View style={styles.header}>
           <View style={styles.logoBox}>
-            <Text style={styles.logoIcon}>💸</Text>
+            <Ionicons name="wallet" size={32} color={colors.primary} />
           </View>
           <Text style={styles.appName}>BillSplitts</Text>
           <Text style={styles.tagline}>Create your account</Text>
@@ -115,21 +116,21 @@ export default function Register() {
           </View>
 
           <Input label="Nickname *" value={form.nickname} onChangeText={set('nickname')}
-            placeholder="jdc" error={errors.nickname} />
+            placeholder="jdc" error={errors.nickname} leftIcon="at-outline" />
           <Input label="Email Address *" value={form.email} onChangeText={set('email')}
-            placeholder="juan@example.com" keyboardType="email-address" error={errors.email} />
+            placeholder="juan@example.com" keyboardType="email-address" error={errors.email} leftIcon="mail-outline" />
           <Input label="Username *" value={form.username} onChangeText={set('username')}
-            placeholder="juandc" error={errors.username} />
+            placeholder="juandc" error={errors.username} leftIcon="person-outline" />
           <Input label="Password *" value={form.password} onChangeText={set('password')}
-            placeholder="Min 8 chars, upper, lower, number, special" secureTextEntry error={errors.password} />
+            placeholder="Min 8 chars, upper, lower, number, special" secureTextEntry error={errors.password} leftIcon="lock-closed-outline" />
           <Input label="Confirm Password *" value={form.confirmPassword} onChangeText={set('confirmPassword')}
-            placeholder="Re-enter password" secureTextEntry error={errors.confirmPassword} />
+            placeholder="Re-enter password" secureTextEntry error={errors.confirmPassword} leftIcon="shield-checkmark-outline" />
 
           <Text style={styles.hint}>
             Password: 8–16 characters, must include uppercase, lowercase, number, and special character.
           </Text>
 
-          <Button title="Create Account" onPress={handleRegister} loading={loading} style={styles.btn} />
+          <Button title="Create Account" icon="checkmark-circle-outline" iconPosition="right" onPress={handleRegister} loading={loading} style={styles.btn} />
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
@@ -153,7 +154,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
     marginBottom: spacing.sm,
   },
-  logoIcon: { fontSize: 30 },
   appName: { fontSize: fontSize.xl, fontWeight: '800', color: colors.primary },
   tagline: { fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.xs },
   card: {

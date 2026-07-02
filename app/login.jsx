@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, StyleSheet, TouchableOpacity,
-  KeyboardAvoidingView, Platform, Image,
+  KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { Link, Redirect, router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -52,7 +53,7 @@ export default function Login() {
       >
         <View style={styles.header}>
           <View style={styles.logoBox}>
-            <Text style={styles.logoIcon}>💸</Text>
+            <Ionicons name="wallet" size={38} color={colors.primary} />
           </View>
           <Text style={styles.appName}>BillSplitts</Text>
           <Text style={styles.tagline}>Split bills, keep friendships</Text>
@@ -75,6 +76,7 @@ export default function Login() {
             placeholder="Enter your username"
             error={errors.username}
             autoCapitalize="none"
+            leftIcon="person-outline"
           />
           <Input
             label="Password"
@@ -83,13 +85,14 @@ export default function Login() {
             placeholder="Enter your password"
             secureTextEntry
             error={errors.password}
+            leftIcon="lock-closed-outline"
           />
 
           <TouchableOpacity onPress={() => router.push('/forgot-password')} style={styles.forgotLink}>
             <Text style={styles.forgotText}>Forgot password?</Text>
           </TouchableOpacity>
 
-          <Button title="Sign In" onPress={handleLogin} loading={loading} style={styles.btn} />
+          <Button title="Sign In" icon="log-in-outline" iconPosition="right" onPress={handleLogin} loading={loading} style={styles.btn} />
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account? </Text>
@@ -113,7 +116,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
     marginBottom: spacing.md,
   },
-  logoIcon: { fontSize: 36 },
   appName: { fontSize: fontSize.xxl, fontWeight: '800', color: colors.primary, letterSpacing: -0.5 },
   tagline: { fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.xs },
   card: {
